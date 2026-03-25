@@ -413,12 +413,14 @@ export default function App() {
                 defaultOpen={true}
               >
                 <div className="pt-3">
-                  <FeatureRow feature="Google Calendar MCP" description="Read/create/modify calendar events" risk="moderate" detail="Claude sees all your meetings, attendees, and notes. A malicious calendar invite could contain hidden instructions." />
-                  <FeatureRow feature="Google Drive MCP" description="Search, read, create documents" risk="moderate" detail="Claude can access any document in your Drive, including shared files from others." />
-                  <FeatureRow feature="Asana / Monday MCP" description="Read/update project tasks" risk="moderate" detail="Claude can modify task status, create items, change assignments." />
-                  <FeatureRow feature="Slack MCP" description="Read/send messages" risk="high" detail="Claude can read channels and send messages as you. A prompt injection in a Slack message could trigger unintended actions." />
-                  <FeatureRow feature="Fathom MCP" description="Read meeting transcripts" risk="moderate" detail="Transcripts contain everything said in meetings, including sensitive discussions." />
-                  <FeatureRow feature="Calendly MCP" description="Read/manage scheduling" risk="low" detail="Limited scope — scheduling data is less sensitive." />
+                  <FeatureRow feature="Google Calendar / Outlook" description="Read/create/modify calendar events" risk="moderate" detail="Claude sees all your meetings, attendees, and notes. A malicious calendar invite could contain hidden instructions." />
+                  <FeatureRow feature="Google Drive / OneDrive" description="Search, read, create documents" risk="moderate" detail="Claude can access any document in your cloud storage, including shared files from others." />
+                  <FeatureRow feature="Project Management (Asana, Monday, Trello, etc.)" description="Read/update project tasks" risk="moderate" detail="Claude can modify task status, create items, change assignments." />
+                  <FeatureRow feature="Messaging (Slack, Teams, etc.)" description="Read/send messages" risk="high" detail="Claude can read channels and send messages as you. A prompt injection in a message could trigger unintended actions." />
+                  <FeatureRow feature="Email (Gmail, Outlook)" description="Read/send/draft emails" risk="high" detail="Claude can read your inbox and send emails on your behalf. Review every outbound message before it sends." />
+                  <FeatureRow feature="Meeting Transcripts (Fathom, Otter, Fireflies, etc.)" description="Read meeting recordings and notes" risk="moderate" detail="Transcripts contain everything said in meetings, including sensitive discussions." />
+                  <FeatureRow feature="Scheduling (Calendly, Cal.com, etc.)" description="Read/manage scheduling" risk="low" detail="Limited scope — scheduling data is less sensitive." />
+                  <p className="text-xs text-gray-500 mt-3 italic">These are common examples — there are hundreds of tool integrations available. The same risk principles apply to any tool you connect.</p>
                 </div>
               </Expandable>
 
