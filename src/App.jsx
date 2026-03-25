@@ -406,6 +406,13 @@ export default function App() {
             <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">Connecting Your Work Tools</h2>
             <p className="text-sm text-gray-400 mb-6">Each connection gives Claude access to real data and the ability to take real actions.</p>
 
+            <div className="bg-surface/60 rounded-xl p-5 mb-6 border border-white/5">
+              <h3 className="text-sm font-semibold text-white mb-2">How Tools Connect to AI</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                AI assistants connect to your work tools in several ways. <strong className="text-gray-300">MCP servers</strong> (Model Context Protocol) are direct, real-time connections that let AI read and write data in apps like your calendar, email, or cloud storage. <strong className="text-gray-300">Plugins and extensions</strong> are pre-built integrations — often installed from a marketplace — that give AI access to specific services. <strong className="text-gray-300">API connections</strong> are custom-built links, typically set up by a developer or IT team, that connect AI to internal systems or databases. Each method varies in complexity, but the security principle is the same: every connection you add expands what AI can see and do. The more tools connected, the more powerful the AI becomes — and the more important it is to understand what you've granted access to.
+              </p>
+            </div>
+
             <div className="space-y-4">
               <Expandable
                 title="Features at This Tier"
