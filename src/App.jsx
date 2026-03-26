@@ -4,12 +4,13 @@ import { Shield, Home, Key, Eye, Monitor, Smartphone, ChevronDown, ChevronRight,
 import './index.css'
 
 // ─── Animated Section Wrapper ────────────────────────────────
-function Section({ children, className = '', delay = 0 }) {
+function Section({ children, className = '', delay = 0, id }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   return (
     <motion.section
       ref={ref}
+      id={id}
       initial={{ opacity: 0, y: 32 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay, ease: 'easeOut' }}
