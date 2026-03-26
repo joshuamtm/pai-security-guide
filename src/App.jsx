@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Shield, Home, Key, Eye, Monitor, Smartphone, ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, XCircle, Info, ExternalLink, Lock, Unlock, ShieldAlert, ShieldCheck, ShieldOff, Radio } from 'lucide-react'
+import { Shield, Search, CalendarSync, UserRoundSearch, BotOff, ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, XCircle, Info, ExternalLink, Lock, Unlock, ShieldAlert, ShieldCheck, ShieldOff, Radio } from 'lucide-react'
 import './index.css'
 
 // ─── Animated Section Wrapper ────────────────────────────────
@@ -127,33 +127,155 @@ function DecisionCard({ situation, recommendation, safe }) {
   )
 }
 
-// ─── House Visualization ─────────────────────────────────────
-function HouseViz() {
+// ─── Tier Illustration SVGs ──────────────────────────────────
+function TierIllustration({ tier, size = 120 }) {
+  const illustrations = {
+    1: (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Researcher: figure at desk reading documents */}
+        <rect x="20" y="65" width="80" height="4" rx="2" fill="#1f2937" />
+        {/* Desk */}
+        <rect x="25" y="45" width="70" height="20" rx="3" fill="#111827" stroke="#22c55e" strokeWidth="0.5" strokeOpacity="0.3" />
+        {/* Documents on desk */}
+        <rect x="32" y="50" width="14" height="10" rx="1" fill="#22c55e" fillOpacity="0.15" stroke="#22c55e" strokeWidth="0.5" strokeOpacity="0.4" />
+        <rect x="50" y="50" width="14" height="10" rx="1" fill="#22c55e" fillOpacity="0.1" stroke="#22c55e" strokeWidth="0.5" strokeOpacity="0.3" />
+        <rect x="68" y="50" width="14" height="10" rx="1" fill="#22c55e" fillOpacity="0.08" stroke="#22c55e" strokeWidth="0.5" strokeOpacity="0.2" />
+        {/* AI figure - seated, reading */}
+        <circle cx="60" cy="30" r="8" fill="#22c55e" fillOpacity="0.12" stroke="#22c55e" strokeWidth="1" strokeOpacity="0.5" />
+        <circle cx="60" cy="30" r="3" fill="#22c55e" fillOpacity="0.3" />
+        {/* Body */}
+        <path d="M52 38 L60 44 L68 38" stroke="#22c55e" strokeWidth="1" strokeOpacity="0.4" fill="none" />
+        {/* Subtle glow */}
+        <circle cx="60" cy="30" r="16" fill="#22c55e" fillOpacity="0.04" />
+        {/* Label line */}
+        <line x1="30" y1="80" x2="90" y2="80" stroke="#22c55e" strokeWidth="0.5" strokeOpacity="0.15" />
+        <text x="60" y="90" textAnchor="middle" fill="#22c55e" fillOpacity="0.5" fontSize="7" fontFamily="monospace">READS ONLY</text>
+      </svg>
+    ),
+    2: (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Coordinator: figure actively working with multiple tools */}
+        {/* Filing cabinet */}
+        <rect x="15" y="35" width="20" height="40" rx="2" fill="#111827" stroke="#f59e0b" strokeWidth="0.5" strokeOpacity="0.3" />
+        <rect x="17" y="38" width="16" height="8" rx="1" fill="#f59e0b" fillOpacity="0.08" />
+        <rect x="17" y="48" width="16" height="8" rx="1" fill="#f59e0b" fillOpacity="0.06" />
+        <rect x="17" y="58" width="16" height="8" rx="1" fill="#f59e0b" fillOpacity="0.04" />
+        {/* Screen */}
+        <rect x="55" y="30" width="45" height="28" rx="2" fill="#111827" stroke="#f59e0b" strokeWidth="0.5" strokeOpacity="0.4" />
+        <rect x="58" y="33" width="39" height="18" rx="1" fill="#f59e0b" fillOpacity="0.08" />
+        {/* Calendar icon on screen */}
+        <rect x="62" y="36" width="10" height="10" rx="1" fill="#f59e0b" fillOpacity="0.15" />
+        <rect x="75" y="36" width="10" height="4" rx="1" fill="#f59e0b" fillOpacity="0.12" />
+        <rect x="75" y="42" width="10" height="4" rx="1" fill="#f59e0b" fillOpacity="0.1" />
+        {/* AI figure - standing, active */}
+        <circle cx="45" cy="25" r="8" fill="#f59e0b" fillOpacity="0.12" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.5" />
+        <circle cx="45" cy="25" r="3" fill="#f59e0b" fillOpacity="0.3" />
+        {/* Arms reaching to both sides */}
+        <path d="M37 33 L25 45" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.3" />
+        <path d="M53 33 L65 38" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.3" />
+        {/* Body */}
+        <line x1="45" y1="33" x2="45" y2="55" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.3" />
+        {/* Glow */}
+        <circle cx="45" cy="25" r="18" fill="#f59e0b" fillOpacity="0.04" />
+        <text x="60" y="90" textAnchor="middle" fill="#f59e0b" fillOpacity="0.5" fontSize="7" fontFamily="monospace">READS + WRITES</text>
+      </svg>
+    ),
+    3: (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Shadow: figure behind person, looking at their screen */}
+        {/* Person at desk */}
+        <circle cx="50" cy="40" r="6" fill="#1f2937" stroke="#6b7280" strokeWidth="0.5" />
+        <line x1="50" y1="46" x2="50" y2="60" stroke="#6b7280" strokeWidth="1" strokeOpacity="0.4" />
+        {/* Person's screen */}
+        <rect x="60" y="32" width="35" height="22" rx="2" fill="#111827" stroke="#f97316" strokeWidth="0.5" strokeOpacity="0.4" />
+        {/* Sensitive data on screen */}
+        <rect x="63" y="35" width="20" height="3" rx="1" fill="#f97316" fillOpacity="0.2" />
+        <rect x="63" y="40" width="15" height="2" rx="0.5" fill="#f97316" fillOpacity="0.15" />
+        <text x="63" y="48" fill="#f97316" fillOpacity="0.3" fontSize="4" fontFamily="monospace">••••••••</text>
+        <text x="63" y="52" fill="#f97316" fillOpacity="0.2" fontSize="3.5" fontFamily="monospace">credentials</text>
+        {/* AI Shadow figure - behind and looking over */}
+        <circle cx="40" cy="28" r="9" fill="#f97316" fillOpacity="0.12" stroke="#f97316" strokeWidth="1" strokeOpacity="0.5" />
+        <circle cx="40" cy="28" r="3.5" fill="#f97316" fillOpacity="0.35" />
+        {/* Eye-line to screen */}
+        <line x1="44" y1="26" x2="62" y2="38" stroke="#f97316" strokeWidth="0.5" strokeOpacity="0.25" strokeDasharray="2 2" />
+        {/* Ambient glow - larger, representing broad exposure */}
+        <circle cx="55" cy="42" r="35" fill="#f97316" fillOpacity="0.03" />
+        <circle cx="40" cy="28" r="20" fill="#f97316" fillOpacity="0.04" />
+        <text x="60" y="90" textAnchor="middle" fill="#f97316" fillOpacity="0.5" fontSize="7" fontFamily="monospace">SEES EVERYTHING</text>
+      </svg>
+    ),
+    4: (
+      <svg viewBox="0 0 120 120" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Delegate: figure alone at night, multiple screens */}
+        {/* Clock showing midnight */}
+        <circle cx="90" cy="18" r="10" fill="none" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.3" />
+        <line x1="90" y1="18" x2="90" y2="12" stroke="#ef4444" strokeWidth="0.8" strokeOpacity="0.4" />
+        <line x1="90" y1="18" x2="94" y2="18" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.3" />
+        {/* Multiple screens - no human present */}
+        <rect x="10" y="35" width="28" height="18" rx="2" fill="#111827" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.3" />
+        <rect x="12" y="37" width="24" height="12" rx="1" fill="#ef4444" fillOpacity="0.06" />
+        <rect x="45" y="30" width="32" height="22" rx="2" fill="#111827" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.4" />
+        <rect x="47" y="32" width="28" height="16" rx="1" fill="#ef4444" fillOpacity="0.08" />
+        <rect x="84" y="35" width="28" height="18" rx="2" fill="#111827" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.3" />
+        <rect x="86" y="37" width="24" height="12" rx="1" fill="#ef4444" fillOpacity="0.06" />
+        {/* Connection lines between screens */}
+        <line x1="38" y1="44" x2="45" y2="41" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.2" strokeDasharray="2 1" />
+        <line x1="77" y1="41" x2="84" y2="44" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.2" strokeDasharray="2 1" />
+        {/* AI figure - alone, centered, autonomous */}
+        <circle cx="60" cy="68" r="10" fill="#ef4444" fillOpacity="0.12" stroke="#ef4444" strokeWidth="1" strokeOpacity="0.5" />
+        <circle cx="60" cy="68" r="4" fill="#ef4444" fillOpacity="0.35" />
+        {/* Radiating autonomous action lines */}
+        <line x1="52" y1="62" x2="35" y2="53" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.2" />
+        <line x1="60" y1="58" x2="60" y2="52" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.25" />
+        <line x1="68" y1="62" x2="85" y2="53" stroke="#ef4444" strokeWidth="0.5" strokeOpacity="0.2" />
+        {/* No human indicator */}
+        <text x="60" y="90" textAnchor="middle" fill="#ef4444" fillOpacity="0.5" fontSize="7" fontFamily="monospace">ACTS ALONE</text>
+        {/* Pulsing glow */}
+        <circle cx="60" cy="68" r="25" fill="#ef4444" fillOpacity="0.03" />
+      </svg>
+    ),
+  }
+  return illustrations[tier] || null
+}
+
+// ─── Tier Visualization ──────────────────────────────────────
+function TierViz() {
   const tiers = [
-    { level: 4, label: 'Tier 4', name: 'Remote Control', icon: <Smartphone size={18} />, color: 'border-risk-critical', bg: 'bg-risk-critical/8', text: 'text-risk-critical', desc: 'All of the above, from your phone' },
-    { level: 3, label: 'Tier 3', name: 'Over Your Shoulder', icon: <Eye size={18} />, color: 'border-risk-high', bg: 'bg-risk-high/8', text: 'text-risk-high', desc: 'Watching your screen, using your browser' },
-    { level: 2, label: 'Tier 2', name: 'Keys to Rooms', icon: <Key size={18} />, color: 'border-risk-moderate', bg: 'bg-risk-moderate/8', text: 'text-risk-moderate', desc: 'Access to email, calendar, projects' },
-    { level: 1, label: 'Tier 1', name: 'Living Room', icon: <Home size={18} />, color: 'border-risk-low', bg: 'bg-risk-low/8', text: 'text-risk-low', desc: 'Can see the coffee table, does what you ask' },
+    { level: 1, label: 'Tier 1', name: 'The Researcher', icon: <Search size={18} />, color: 'border-risk-low', bg: 'bg-risk-low/8', text: 'text-risk-low', desc: 'Reads what you share, answers your questions', benefit: 'A tireless analyst who never loses focus', risk: 'Can only see what you show them' },
+    { level: 2, label: 'Tier 2', name: 'The Coordinator', icon: <CalendarSync size={18} />, color: 'border-risk-moderate', bg: 'bg-risk-moderate/8', text: 'text-risk-moderate', desc: 'Has keys to the office — email, calendar, shared drives', benefit: 'Handles the routine work that buries you', risk: 'Can now write under your name' },
+    { level: 3, label: 'Tier 3', name: 'The Shadow', icon: <UserRoundSearch size={18} />, color: 'border-risk-high', bg: 'bg-risk-high/8', text: 'text-risk-high', desc: 'Follows you everywhere — sees your screen, your passwords, your open tabs', benefit: 'Moves fluidly across all your systems', risk: 'Sees what you happen to have open, not just what you chose to share' },
+    { level: 4, label: 'Tier 4', name: 'The Delegate', icon: <BotOff size={18} />, color: 'border-risk-critical', bg: 'bg-risk-critical/8', text: 'text-risk-critical', desc: 'Works while you sleep — chains tasks, makes judgment calls', benefit: 'Your organization operates beyond your personal capacity', risk: "You've delegated not just access but judgment" },
   ]
 
   return (
-    <div className="space-y-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {tiers.map((tier, i) => (
         <motion.div
           key={tier.level}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: i * 0.12, duration: 0.4 }}
-          className={`border-l-2 ${tier.color} ${tier.bg} rounded-r-lg p-4 flex items-center gap-4`}
+          transition={{ delay: i * 0.12, duration: 0.5 }}
+          className={`border ${tier.color} ${tier.bg} rounded-xl p-5 flex flex-col items-center text-center`}
         >
-          <div className={`${tier.text} flex-shrink-0`}>{tier.icon}</div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[10px] font-mono font-semibold text-gray-500 tracking-wider">{tier.label}</span>
-              <span className={`text-sm font-semibold ${tier.text}`}>{tier.name}</span>
+          <div className="mb-3">
+            <TierIllustration tier={tier.level} size={100} />
+          </div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-semibold text-gray-500 tracking-wider">{tier.label}</span>
+            <div className={`${tier.text}`}>{tier.icon}</div>
+          </div>
+          <h3 className={`text-lg font-bold ${tier.text} mb-1`}>{tier.name}</h3>
+          <p className="text-xs text-gray-400 mb-3">{tier.desc}</p>
+          <div className="w-full space-y-1.5 text-left">
+            <div className="flex items-start gap-2">
+              <CheckCircle2 size={12} className="text-risk-low mt-0.5 flex-shrink-0" />
+              <p className="text-[11px] text-gray-400">{tier.benefit}</p>
             </div>
-            <p className="text-xs text-gray-500">{tier.desc}</p>
+            <div className="flex items-start gap-2">
+              <AlertTriangle size={12} className={`${tier.text} mt-0.5 flex-shrink-0`} />
+              <p className="text-[11px] text-gray-400">{tier.risk}</p>
+            </div>
           </div>
         </motion.div>
       ))}
@@ -282,7 +404,7 @@ export default function App() {
             <span className="font-mono text-xs font-semibold tracking-wider text-gray-400">AI SECURITY GUIDE</span>
           </a>
           <div className="hidden md:flex items-center gap-6">
-            {['House Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook'].map(label => (
+            {['The Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook'].map(label => (
               <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`} className="text-xs text-gray-500 hover:text-accent transition-colors">
                 {label}
               </a>
@@ -294,7 +416,7 @@ export default function App() {
         </div>
         {navOpen && (
           <div className="md:hidden bg-surface border-t border-gray-800 px-6 py-3 space-y-2">
-            {['House Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook', 'Organizations', 'Glossary', 'Legal'].map(label => (
+            {['The Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook', 'Organizations', 'Glossary', 'Legal'].map(label => (
               <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => setNavOpen(false)} className="block text-sm text-gray-400 hover:text-accent py-1">
                 {label}
               </a>
@@ -359,15 +481,15 @@ export default function App() {
           </div>
         </Section>
 
-        {/* ── House Metaphor ────────────────────── */}
-        <Section className="pb-20" id="house-metaphor">
+        {/* ── The Metaphor ────────────────────── */}
+        <Section className="pb-20" id="the-metaphor">
           <div className="flex items-center gap-3 mb-2">
-            <Home size={18} className="text-accent" />
+            <Shield size={18} className="text-accent" />
             <span className="text-[10px] font-mono text-accent tracking-[0.15em] font-semibold">THE METAPHOR</span>
           </div>
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">Think of It Like Your House</h2>
-          <p className="text-sm text-gray-400 mb-8 max-w-xl">You wouldn't give a house guest keys to every room on day one. Each tier of AI integration is like granting deeper access to your digital home.</p>
-          <HouseViz />
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">Same Assistant. Different Access. Different Stakes.</h2>
+          <p className="text-sm text-gray-400 mb-8 max-w-2xl">Think of your AI assistant as a new team member. Their skill never changes — what changes is which doors you open for them. Each tier grants deeper access to your digital workspace, with more capability <em>and</em> more exposure.</p>
+          <TierViz />
         </Section>
 
         {/* ── Tier 1 ───────────────────────────── */}
@@ -377,7 +499,7 @@ export default function App() {
               <RiskBadge level="low" />
               <span className="text-[10px] font-mono text-gray-500 tracking-wider">TIER 1</span>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">The Foundation</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">The Researcher</h2>
             <p className="text-sm text-gray-400 mb-6">Safe for most users with minimal precautions.</p>
 
             <div className="space-y-4">
@@ -419,7 +541,7 @@ export default function App() {
               <RiskBadge level="moderate" />
               <span className="text-[10px] font-mono text-gray-500 tracking-wider">TIER 2</span>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">Connecting Your Work Tools</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">The Coordinator</h2>
             <p className="text-sm text-gray-400 mb-6">Each connection gives Claude access to real data and the ability to take real actions.</p>
 
             <div className="bg-surface/60 rounded-xl p-5 mb-6 border border-white/5">
@@ -518,7 +640,7 @@ export default function App() {
               <RiskBadge level="high" />
               <span className="text-[10px] font-mono text-gray-500 tracking-wider">TIER 3</span>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">Browser Integration</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">The Shadow</h2>
             <p className="text-sm text-gray-400 mb-6">Claude gets access to your live browser sessions — the same websites you're logged into, with the same credentials.</p>
 
             {/* Anthropic Warning */}
@@ -588,7 +710,7 @@ export default function App() {
               <RiskBadge level="critical" />
               <span className="text-[10px] font-mono text-gray-500 tracking-wider">TIER 4</span>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">Remote & Autonomous Operation</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">The Delegate</h2>
             <p className="text-sm text-gray-400 mb-6">Claude operates with reduced oversight or from a remote device.</p>
 
             {/* Zero-click vulnerability callout */}
@@ -623,7 +745,7 @@ export default function App() {
                 defaultOpen={true}
               >
                 <div className="pt-3">
-                  <FeatureRow feature="Dispatch (mobile remote)" description="Control Claude Desktop from your phone" risk="critical" detail="Your phone becomes a remote control for everything Claude can access on your desktop. If your phone is compromised, your entire AI setup is compromised." />
+                  <FeatureRow feature="Dispatch (mobile remote)" description="Control Claude Desktop from your phone" risk="critical" detail="Your phone becomes a remote interface for everything Claude can access on your desktop. If your phone is compromised, your entire AI setup is compromised." />
                   <FeatureRow feature="Autonomous mode (--dangerously-skip-permissions)" description="Claude executes without asking permission" risk="critical" detail="Claude can run any command, modify any file, send any message without your approval. Appropriate for throwaway sandboxes only." />
                   <FeatureRow feature="MCP connector chaining" description="Multiple connected services can trigger each other" risk="critical" detail="A calendar event can trigger email access can trigger file modifications. This is the attack vector for the CVSS 10/10 vulnerability above." />
                 </div>
