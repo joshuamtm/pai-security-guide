@@ -281,7 +281,7 @@ export default function App() {
             <span className="font-mono text-xs font-semibold tracking-wider text-gray-400">AI SECURITY GUIDE</span>
           </a>
           <div className="hidden md:flex items-center gap-6">
-            {['House Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs'].map(label => (
+            {['House Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook'].map(label => (
               <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`} className="text-xs text-gray-500 hover:text-accent transition-colors">
                 {label}
               </a>
@@ -293,7 +293,7 @@ export default function App() {
         </div>
         {navOpen && (
           <div className="md:hidden bg-surface border-t border-gray-800 px-6 py-3 space-y-2">
-            {['House Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Organizations', 'Recommended Setup'].map(label => (
+            {['House Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook', 'Organizations', 'Glossary', 'Legal'].map(label => (
               <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => setNavOpen(false)} className="block text-sm text-gray-400 hover:text-accent py-1">
                 {label}
               </a>
@@ -312,7 +312,7 @@ export default function App() {
           >
             <div className="flex items-center gap-2 mb-6">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent to-accent/30" />
-              <span className="text-[10px] font-mono text-accent tracking-[0.2em] font-semibold">v1.0 — MARCH 2026</span>
+              <span className="text-[10px] font-mono text-accent tracking-[0.2em] font-semibold">v1.1 — MARCH 2026</span>
               <div className="h-px flex-1 bg-gradient-to-l from-transparent to-accent/30" />
             </div>
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white text-center leading-[1.1] tracking-tight mb-6">
@@ -320,8 +320,8 @@ export default function App() {
               <span className="text-accent">Security Guide</span>
             </h1>
             <p className="text-center text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8">
-              A practical framework for using Claude Code safely.<br className="hidden md:block" />
-              No cybersecurity degree required.
+              A practical framework for using AI coding assistants safely.<br className="hidden md:block" />
+              Written for Claude Code. Principles apply to Cursor, Copilot, and beyond.
             </p>
             <div className="flex items-center justify-center gap-2 text-xs text-gray-600">
               <Shield size={12} />
@@ -331,6 +331,19 @@ export default function App() {
             </div>
           </motion.div>
         </section>
+
+        {/* ── Why This Guide Exists ─────────────── */}
+        <Section className="pb-10">
+          <div className="bg-surface/60 border border-gray-800 rounded-2xl p-8 md:p-10">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">Why This Guide Exists</h2>
+            <p className="text-base text-gray-300 leading-relaxed mb-4">
+              AI tools are already transforming how organizations work. The biggest risk isn't adopting them badly — it's <span className="text-white font-semibold">not adopting them at all</span> and falling behind while peers move forward. This guide helps you adopt AI confidently, not avoid it entirely.
+            </p>
+            <p className="text-base text-gray-400 leading-relaxed">
+              You don't need to understand every technical detail. You need a mental model for making good decisions — which features to enable, which to skip, and how to tell the difference.
+            </p>
+          </div>
+        </Section>
 
         {/* ── Core Principle ────────────────────── */}
         <Section className="pb-16">
@@ -374,8 +387,8 @@ export default function App() {
               >
                 <div className="pt-3">
                   <FeatureRow feature="Claude Code CLI" description="AI assistant in your terminal" risk="low" detail="You see every action, approve every command. Nothing happens without your explicit permission." />
-                  <FeatureRow feature="Read-only file access" description="Claude reads your code and documents" risk="low" detail="Reading isn't changing. Claude can't modify anything without asking." />
-                  <FeatureRow feature="Web search" description="Claude searches the internet for you" risk="low" detail="Same as you Googling something. Claude reports back, doesn't act." />
+                  <FeatureRow feature="Read-only file access" description="Claude reads your code and documents" risk="low" detail="Reading isn't changing. Claude can't modify anything without asking. But be aware: Claude can see .env files, config files, and credential stores in your project directory." />
+                  <FeatureRow feature="Web search" description="Claude searches the internet for you" risk="low" detail="Low risk alone. Note: when combined with local file access, web search could theoretically be used as an exfiltration channel via crafted URLs." />
                   <FeatureRow feature="Basic slash commands" description="Pre-built workflows (/commit, /review)" risk="low" detail="Scoped to specific, predictable tasks." />
                 </div>
               </Expandable>
@@ -389,6 +402,8 @@ export default function App() {
                   'Review the default permission settings — understand what "Allow" vs "Allow Always" means',
                   'Start with the default permission mode (ask every time) until you\'re comfortable',
                   'Don\'t paste sensitive credentials into chat — use environment variables instead',
+                  'Create a .claudeignore file to exclude .env files, credential stores (~/.aws/credentials), and config files with secrets from Claude\'s context',
+                  'Keep Claude Code updated — Anthropic\'s October 2025 sandboxing update provides OS-level filesystem and network isolation',
                 ]} />
                 <p className="text-xs text-gray-600 mt-4 font-mono">Maintenance: None beyond keeping Claude Code updated.</p>
               </Expandable>
@@ -411,6 +426,22 @@ export default function App() {
               <p className="text-sm text-gray-400 leading-relaxed">
                 AI assistants connect to your work tools in several ways. <strong className="text-gray-300">MCP servers</strong> (Model Context Protocol) are direct, real-time connections that let AI read and write data in apps like your calendar, email, or cloud storage. <strong className="text-gray-300">Plugins and extensions</strong> are pre-built integrations — often installed from a marketplace — that give AI access to specific services. <strong className="text-gray-300">API connections</strong> are custom-built links, typically set up by a developer or IT team, that connect AI to internal systems or databases. Each method varies in complexity, but the security principle is the same: every connection you add expands what AI can see and do. The more tools connected, the more powerful the AI becomes — and the more important it is to understand what you've granted access to.
               </p>
+            </div>
+
+            {/* MCP Supply Chain Warning */}
+            <div className="bg-risk-moderate/5 border border-risk-moderate/20 rounded-xl p-5 mb-6">
+              <div className="flex items-start gap-3">
+                <AlertTriangle size={18} className="text-risk-moderate mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-xs font-mono font-semibold text-risk-moderate tracking-wider mb-2">MCP SUPPLY CHAIN RISK</p>
+                  <p className="text-sm text-gray-300 leading-relaxed mb-2">
+                    MCP servers are <span className="text-white font-semibold">code running on your machine with your credentials</span>. In January 2026, three CVEs were disclosed in Anthropic's own official Git MCP server — including one that allowed remote code execution. Community-built servers carry additional risk from typosquatting, dependency poisoning, and maintainer compromise.
+                  </p>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    <span className="text-gray-200 font-medium">Before installing any MCP server:</span> verify the source (official vs. community), check for recent maintenance, review the permissions it requests, and prefer servers with read-only modes. Only install from trusted package registries.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -463,9 +494,11 @@ export default function App() {
                 <Checklist id="tier2" items={[
                   'Only connect services you actively need — don\'t enable everything "just in case"',
                   'Review what permissions each MCP server requests (read-only vs. read-write)',
+                  'Vet MCP servers before installing: prefer official or well-maintained servers with published source code. Check the package name carefully — typosquatting is common',
                   'For each connection, ask: "What\'s the worst thing Claude could do with this access?"',
                   'If a service has read-only mode available, start there',
                   'Never approve "send email" or "post message" actions without reviewing the content first',
+                  'Beware the "Lethal Trifecta": avoid connecting services that give Claude private data access + untrusted content exposure + external communication ability simultaneously',
                 ]} />
                 <div className="mt-4 space-y-1 text-xs text-gray-600 font-mono">
                   <p>Monthly: Review MCP servers. Disable any unused for 30 days.</p>
@@ -509,7 +542,7 @@ export default function App() {
                 <div className="pt-3">
                   <FeatureRow feature="Claude in Chrome (side panel)" description="Takes screenshots of your active browser tab" risk="high" detail="Claude sees everything on screen — bank balances, medical records, client data, personal messages. Whatever is visible, Claude captures." />
                   <FeatureRow feature="JavaScript execution (per-domain)" description="Interact with web pages — click, fill forms, read data" risk="critical" detail="Claude has the same access as you on that website. If manipulated by hidden instructions (prompt injection), it could read your cookies, session tokens, and act as you." />
-                  <FeatureRow feature="Computer Use" description="Claude controls your mouse and keyboard" risk="critical" detail="Full control of your computer. Claude can navigate anywhere, type anything, click anything." />
+                  <FeatureRow feature="Computer Use" description="Claude interacts with your screen via screenshots and coordinate-based actions" risk="critical" detail="Claude takes screenshots, identifies elements, and clicks/types on your behalf. While not raw input device control, the effect is the same — Claude can navigate anywhere your screen shows and take any action you could take." />
                 </div>
               </Expandable>
 
@@ -562,15 +595,21 @@ export default function App() {
               <div className="flex items-start gap-3">
                 <ShieldAlert size={18} className="text-risk-critical mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-xs font-mono font-semibold text-risk-critical tracking-wider mb-2">KNOWN VULNERABILITY — CVSS 10/10</p>
+                  <p className="text-xs font-mono font-semibold text-risk-critical tracking-wider mb-2">KNOWN ARCHITECTURAL LIMITATION — CRITICAL SEVERITY</p>
                   <p className="text-sm text-gray-300 leading-relaxed mb-3">
                     Someone sends you a Google Calendar invite. The event title looks normal — "Task Management" or "Q2 Planning." But hidden in the event description are instructions that Claude interprets as commands.
                   </p>
                   <p className="text-sm text-gray-300 leading-relaxed mb-3">
                     When you ask Claude to check your calendar, it reads the event, follows the hidden instructions, and uses your other connected services (email, files) to execute them. <span className="text-white font-semibold">You never see it happening.</span>
                   </p>
-                  <p className="text-sm text-risk-critical font-medium">
-                    This is not theoretical. Security researchers demonstrated it, and Anthropic declined to patch it.
+                  <p className="text-sm text-gray-300 leading-relaxed mb-3">
+                    This attack has been demonstrated against Google Gemini and Microsoft Copilot. The same vector applies to any AI assistant with simultaneous access to calendar, files, and external communications — what security researcher Simon Willison calls <span className="text-white font-semibold">"The Lethal Trifecta"</span>: private data access + untrusted content exposure + ability to communicate externally.
+                  </p>
+                  <p className="text-sm text-gray-400 leading-relaxed mb-2">
+                    <span className="text-risk-critical font-medium">This applies when you have Calendar + Email (or Slack) MCP servers connected simultaneously.</span> Users at Tier 1 with no MCP connections are not affected by this specific attack.
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    As of March 2026, Anthropic has characterized this as an inherent limitation of tool-use architectures rather than a patchable vulnerability. OWASP ranks prompt injection as the #1 risk in AI applications. Check <a href="https://modelcontextprotocol.io/specification/draft/basic/security_best_practices" className="text-accent/70 hover:text-accent">MCP security best practices</a> and <a href="https://www.anthropic.com/research/prompt-injection-defenses" className="text-accent/70 hover:text-accent">Anthropic's security advisories</a> for current status.
                   </p>
                 </div>
               </div>
@@ -645,6 +684,49 @@ export default function App() {
           <WarningSignals />
         </Section>
 
+        {/* ── What To Do If ────────────────────── */}
+        <Section className="pb-20" id="response-playbook">
+          <div className="flex items-center gap-3 mb-2">
+            <ShieldAlert size={18} className="text-accent" />
+            <span className="text-[10px] font-mono text-accent tracking-[0.15em] font-semibold">RESPONSE PLAYBOOK</span>
+          </div>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">What To Do If Something Goes Wrong</h2>
+          <p className="text-sm text-gray-400 mb-8">Quick response protocols for the most common incidents.</p>
+
+          <div className="space-y-4">
+            <div className="bg-surface/60 border border-gray-800 rounded-lg p-5">
+              <p className="text-sm font-semibold text-risk-high mb-3">If you suspect prompt injection</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p><span className="text-white font-mono text-xs mr-2">1.</span> <span className="text-gray-200 font-medium">Stop immediately.</span> Do not continue the conversation or approve any pending actions.</p>
+                <p><span className="text-white font-mono text-xs mr-2">2.</span> <span className="text-gray-200 font-medium">Start a new conversation.</span> The current context may be compromised.</p>
+                <p><span className="text-white font-mono text-xs mr-2">3.</span> <span className="text-gray-200 font-medium">Revoke MCP tokens</span> for any write-capable services that were connected during the session.</p>
+                <p><span className="text-white font-mono text-xs mr-2">4.</span> Check sent emails, Slack messages, and file changes for anything you didn't authorize.</p>
+              </div>
+            </div>
+
+            <div className="bg-surface/60 border border-gray-800 rounded-lg p-5">
+              <p className="text-sm font-semibold text-risk-high mb-3">If Claude sent a message you didn't authorize</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p><span className="text-white font-mono text-xs mr-2">1.</span> <span className="text-gray-200 font-medium">Revoke all MCP tokens immediately.</span> Password reset alone may not be sufficient.</p>
+                <p><span className="text-white font-mono text-xs mr-2">2.</span> Review your sent items across all connected services (email, Slack, etc.).</p>
+                <p><span className="text-white font-mono text-xs mr-2">3.</span> Document what happened — screenshots, timestamps, the conversation that triggered it.</p>
+                <p><span className="text-white font-mono text-xs mr-2">4.</span> Tighten permissions to "Ask Every Time" before resuming work.</p>
+                <p><span className="text-white font-mono text-xs mr-2">5.</span> If organizational data was involved, notify your IT team or security contact.</p>
+              </div>
+            </div>
+
+            <div className="bg-surface/60 border border-gray-800 rounded-lg p-5">
+              <p className="text-sm font-semibold text-risk-moderate mb-3">If Claude accessed data it shouldn't have</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p><span className="text-white font-mono text-xs mr-2">1.</span> <span className="text-gray-200 font-medium">Review your MCP connections.</span> Which services were active? What data could Claude see?</p>
+                <p><span className="text-white font-mono text-xs mr-2">2.</span> Disconnect any MCP servers that provided access to sensitive data.</p>
+                <p><span className="text-white font-mono text-xs mr-2">3.</span> Update your <code className="text-accent/70 text-xs">.claudeignore</code> file to exclude sensitive directories.</p>
+                <p><span className="text-white font-mono text-xs mr-2">4.</span> If regulated data (PHI, PII) was involved, consult your privacy officer or legal counsel.</p>
+              </div>
+            </div>
+          </div>
+        </Section>
+
         {/* ── For Organizations ─────────────────── */}
         <Section className="pb-20" id="organizations">
           <div className="flex items-center gap-3 mb-2">
@@ -660,7 +742,11 @@ export default function App() {
               { num: '02', title: 'Data classification matters', desc: 'If your org handles PHI, PII, or data about vulnerable populations, Tier 3 and 4 features should require explicit leadership approval.' },
               { num: '03', title: 'Browser integration is not ready for sensitive environments', desc: 'Anthropic\'s own documentation says so. Don\'t deploy it on machines with access to case management, EHR, or donor databases.' },
               { num: '04', title: 'Create an AI Acceptable Use Policy first', desc: 'Staff need clear guidance on what they can and can\'t do before you hand them powerful tools.' },
-              { num: '05', title: 'Audit MCP connections quarterly', desc: 'Services get added and forgotten. Each forgotten connection is an unmonitored access point.' },
+              { num: '05', title: 'Audit MCP connections quarterly', desc: 'List all active connections, verify each is still needed, confirm permission levels, check for read-write chains (calendar + email), and document findings.' },
+              { num: '06', title: 'Plan for staff transitions', desc: 'When someone leaves, which MCP connections are tied to their personal accounts vs. organizational accounts? Document this before it becomes urgent.' },
+              { num: '07', title: 'Know who should be in the room', desc: 'Tier 1: individual decision. Tier 2: IT review. Tier 3: IT + leadership approval. Tier 4: IT + leadership + external security review.' },
+              { num: '08', title: 'Have an incident response plan', desc: 'What happens when a staff member reports Claude sent an unauthorized email? Who gets notified, what gets disconnected, and how do you document it?' },
+              { num: '09', title: 'Review vendor agreements', desc: 'Review Anthropic\'s Terms of Service and data processing agreement before connecting MCP servers that handle third-party personal data. Understand where data is processed and retained.' },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -693,6 +779,47 @@ export default function App() {
           </div>
         </Section>
 
+        {/* ── Threat Model Glossary ────────────── */}
+        <Section className="pb-20" id="glossary">
+          <div className="flex items-center gap-3 mb-2">
+            <Info size={18} className="text-accent" />
+            <span className="text-[10px] font-mono text-accent tracking-[0.15em] font-semibold">KEY CONCEPTS</span>
+          </div>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-3">Threat Model Glossary</h2>
+          <p className="text-sm text-gray-400 mb-8">Three distinct risk categories with different mitigations.</p>
+
+          <div className="space-y-3">
+            <div className="bg-surface/60 border border-gray-800 rounded-lg p-5">
+              <p className="text-sm font-semibold text-gray-200 mb-2">Prompt Injection</p>
+              <p className="text-sm text-gray-400">Hidden instructions embedded in content Claude reads — a calendar invite, email, document, or webpage — that trick Claude into taking actions you didn't request. This is the #1 AI security risk according to OWASP, present in over 73% of production AI deployments assessed during security audits.</p>
+            </div>
+            <div className="bg-surface/60 border border-gray-800 rounded-lg p-5">
+              <p className="text-sm font-semibold text-gray-200 mb-2">Data Exfiltration</p>
+              <p className="text-sm text-gray-400">When sensitive information leaves your system through an unintended channel. In AI contexts, this could mean Claude encoding private data into a web search URL, including confidential information in an outbound email, or an MCP server observing data flowing through the shared conversation context.</p>
+            </div>
+            <div className="bg-surface/60 border border-gray-800 rounded-lg p-5">
+              <p className="text-sm font-semibold text-gray-200 mb-2">Excessive Agency</p>
+              <p className="text-sm text-gray-400">When an AI takes actions beyond what the user intended — sending messages, modifying files, or accessing services without explicit approval. Mitigated by keeping permissions tight and never auto-approving write actions that affect other people.</p>
+            </div>
+          </div>
+        </Section>
+
+        {/* ── Legal & Compliance ──────────────────── */}
+        <Section className="pb-20" id="legal">
+          <div className="bg-surface/60 border border-gray-800 rounded-2xl p-8 md:p-10">
+            <h2 className="font-display text-xl md:text-2xl font-bold text-white mb-4">Legal &amp; Compliance Note</h2>
+            <p className="text-sm text-gray-400 leading-relaxed mb-4">
+              <span className="text-white font-semibold">This guide provides security guidance, not legal advice.</span> If your organization handles regulated data, consult qualified counsel before processing it through AI tools.
+            </p>
+            <div className="space-y-3 text-sm text-gray-400">
+              <p><span className="text-gray-200 font-medium">HIPAA:</span> Organizations handling protected health information should evaluate whether AI vendors qualify as business associates. Connecting MCP servers to systems containing PHI may trigger specific obligations.</p>
+              <p><span className="text-gray-200 font-medium">State Privacy Laws:</span> As of 2026, twenty U.S. states have comprehensive privacy laws in effect. Connecting AI to systems containing constituent data may trigger state-level obligations, including Colorado's AI-specific impact assessment requirements.</p>
+              <p><span className="text-gray-200 font-medium">NIST AI Agent Standards:</span> The NIST AI Agent Standards Initiative (launched February 2026) is developing security and interoperability standards for autonomous AI agents. These emerging frameworks will shape enterprise AI governance — aligning your practices now positions your organization ahead of regulatory requirements.</p>
+              <p><span className="text-gray-200 font-medium">Vendor Agreements:</span> Review your AI vendor's Terms of Service and data processing agreements before connecting services that handle personal data. Understand where data is processed, how long it is retained, and what happens if the vendor's terms change.</p>
+            </div>
+          </div>
+        </Section>
+
         {/* ── Footer ───────────────────────────── */}
         <footer className="border-t border-gray-800/50 py-12 text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
@@ -706,11 +833,11 @@ export default function App() {
             <a href="https://mtm.now" className="text-accent/70 hover:text-accent transition-colors">Meet the Moment</a> — mtm.now
           </p>
           <div className="flex items-center justify-center gap-2 text-[10px] text-gray-700 font-mono">
-            <span>v1.0</span>
+            <span>v1.1</span>
             <span>•</span>
-            <span>Last reviewed: March 25, 2026</span>
+            <span>Last reviewed: March 26, 2026</span>
             <span>•</span>
-            <span>Next review: June 25, 2026</span>
+            <span>Next review: June 26, 2026</span>
           </div>
           <p className="text-[10px] text-gray-700 mt-4 italic">
             This guide was created with AI assistance and reviewed by a CISSP-certified security professional.
