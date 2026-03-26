@@ -547,7 +547,7 @@ export default function App() {
         <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2">
             <Shield size={18} className="text-teal-700" />
-            <span className="font-mono text-xs font-semibold tracking-wider text-clay-600">AI SECURITY GUIDE</span>
+            <span className="font-mono text-xs font-semibold tracking-wider text-clay-600">PAI SAFETY & SECURITY</span>
           </a>
           <div className="hidden md:flex items-center gap-6">
             {['The Metaphor', 'Tier 1', 'Tier 2', 'Tier 3', 'Tier 4', 'Permissions', 'Warning Signs', 'Response Playbook'].map(label => (
@@ -585,8 +585,8 @@ export default function App() {
               <div className="h-px flex-1 bg-gradient-to-l from-transparent to-teal-300/30" />
             </div>
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-clay-900 text-center leading-[1.1] tracking-tight mb-6">
-              Personal AI<br />
-              <span className="text-teal-700">Security Guide</span>
+              Personal AI Assistant<br />
+              <span className="text-teal-700">Safety &amp; Security Guide</span>
             </h1>
             <p className="text-center text-lg md:text-xl text-clay-600 max-w-2xl mx-auto leading-relaxed mb-8">
               A practical framework for using AI coding assistants safely.<br className="hidden md:block" />
@@ -1113,7 +1113,7 @@ export default function App() {
         <footer className="border-t border-clay-200/60 py-12 text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <Shield size={16} className="text-teal-700" />
-            <span className="font-mono text-xs text-clay-500 tracking-wider">PERSONAL AI SECURITY GUIDE</span>
+            <span className="font-mono text-xs text-clay-500 tracking-wider">PERSONAL AI ASSISTANT — SAFETY & SECURITY GUIDE</span>
           </div>
           <p className="text-sm text-clay-500 mb-1">
             Created by <span className="text-clay-600">Joshua Peskay</span>, CISSP | CISM
