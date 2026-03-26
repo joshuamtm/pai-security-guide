@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Shield, Search, CalendarSync, UserRoundSearch, BotOff, ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, XCircle, Info, ExternalLink, Lock, Unlock, ShieldAlert, ShieldCheck, ShieldOff, Radio } from 'lucide-react'
+import { Shield, Search, CalendarSync, UserRoundSearch, BotOff, Key, Eye, ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, XCircle, Info, ExternalLink, Lock, Unlock, ShieldAlert, ShieldCheck, ShieldOff, Radio } from 'lucide-react'
 import './index.css'
 
 // ─── Animated Section Wrapper ────────────────────────────────
