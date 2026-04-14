@@ -678,6 +678,7 @@ export default function App() {
                   'Don\'t paste sensitive credentials into chat — use environment variables instead',
                   'Create a .claudeignore file to exclude .env files, credential stores (~/.aws/credentials), and config files with secrets from Claude\'s context',
                   'Keep Claude Code updated — Anthropic\'s October 2025 sandboxing update provides OS-level filesystem and network isolation',
+                  'Treat your session transcripts as an audit trail — review them periodically, especially after you\'ve done something consequential. If you can\'t remember what Claude did, go look.',
                 ]} />
                 <p className="text-xs text-clay-400 mt-4 font-mono">Maintenance: None beyond keeping Claude Code updated.</p>
               </Expandable>
@@ -778,6 +779,8 @@ export default function App() {
                   'If a service has read-only mode available, start there',
                   'Never approve "send email" or "post message" actions without reviewing the content first',
                   'Beware the "Lethal Trifecta": avoid connecting services that give Claude private data access + untrusted content exposure + external communication ability simultaneously',
+                  'Understand prompt injection: the documents, emails, calendar invites, and web content Claude reads may contain hidden instructions meant to manipulate it. Be especially cautious with content from unfamiliar senders.',
+                  'Keep a mental (or written) record of which MCP servers handled which actions during a session. If something goes wrong, you need to be able to reconstruct what ran.',
                 ]} />
                 <div className="mt-4 space-y-1 text-xs text-clay-400 font-mono">
                   <p>Monthly: Review MCP servers. Disable any unused for 30 days.</p>
@@ -853,6 +856,8 @@ export default function App() {
                   'Never open the Claude side panel while viewing sensitive information',
                   'If Claude behaves unexpectedly (unrelated topics, credential requests, unexpected navigation) — stop immediately',
                   'Do not use Claude in Chrome on shared or public computers',
+                  'Assume every webpage could carry prompt injection. The words Claude reads on a page can be instructions as much as information — treat unfamiliar sites the way you\'d treat a link from a stranger.',
+                  'Watch actively while Claude is working in the browser. Tier 3 is not a place for "set it and check back later" — your attention is the monitoring layer.',
                 ]} />
                 <div className="mt-4 space-y-1 text-xs text-clay-400 font-mono">
                   <p>Weekly: Review and revoke JavaScript domain permissions.</p>
@@ -940,6 +945,8 @@ export default function App() {
                   'Review MCP connector combinations — ask: "If malicious instructions entered service A, could Claude use service B to act on them?"',
                   'Watch for high-risk combos: Calendar + Email, Slack + Email, any read-service + any write-service',
                   'Consider whether you truly need all connected services running simultaneously',
+                  'Require an audit trail: autonomous actions must be logged in a form you can review afterward. If you can\'t see what it did, you can\'t trust what it did.',
+                  'Plan the monitoring layer before you plan the autonomy. At this tier, "someone noticing something\'s wrong" is the most important safety control — and that someone doesn\'t have to be you, but it has to be something.',
                 ]} />
                 <div className="mt-4 space-y-1 text-xs text-clay-400 font-mono">
                   <p>Monthly: Audit MCP connections for read-write chains.</p>
@@ -1103,7 +1110,7 @@ export default function App() {
             <div className="space-y-3 text-sm text-clay-600">
               <p><span className="text-clay-800 font-medium">HIPAA:</span> Organizations handling protected health information should evaluate whether AI vendors qualify as business associates. Connecting MCP servers to systems containing PHI may trigger specific obligations.</p>
               <p><span className="text-clay-800 font-medium">State Privacy Laws:</span> As of 2026, twenty U.S. states have comprehensive privacy laws in effect. Connecting AI to systems containing constituent data may trigger state-level obligations, including Colorado's AI-specific impact assessment requirements.</p>
-              <p><span className="text-clay-800 font-medium">NIST AI Agent Standards:</span> The NIST AI Agent Standards Initiative (launched February 2026) is developing security and interoperability standards for autonomous AI agents. These emerging frameworks will shape enterprise AI governance — aligning your practices now positions your organization ahead of regulatory requirements.</p>
+              <p><span className="text-clay-800 font-medium">NIST AI Agent Standards:</span> The NIST AI Agent Standards Initiative (launched February 2026) and the follow-on CAISI Request for Information on Securing AI Agent Systems (April 2026) are developing security and interoperability standards for autonomous AI agents. NIST\'s six priorities — agent identity, least privilege, audit trails, monitoring, prompt injection awareness, and protocol standards — map directly onto the tier-by-tier practices in this guide. Aligning your habits now positions your organization ahead of regulatory requirements as these frameworks firm up.</p>
               <p><span className="text-clay-800 font-medium">Vendor Agreements:</span> Review your AI vendor's Terms of Service and data processing agreements before connecting services that handle personal data. Understand where data is processed, how long it is retained, and what happens if the vendor's terms change.</p>
             </div>
           </div>
